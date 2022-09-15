@@ -11,11 +11,13 @@ public class TestUsers {
 
     public static UserModel getAdmin(){
         UserModel user = new UserModel();
+        user.setUser_id(1l);
         user.setLastenterdata(LocalDateTime.now());
         user.setPassword("11111111");
         user.setCreatedata(LocalDateTime.now());
         user.setEnabled(true);
         user.setUsername("admin");
+        user.setRole("ROLE_USER");
         return user;
     }
 

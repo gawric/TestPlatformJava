@@ -8,6 +8,7 @@ import com.server.testplatform.testplatform.model.upload.UploadImageModel;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -62,7 +63,7 @@ public class UserModel {
 
 
     @JsonIgnore
-    @OneToMany(targetEntity = UserFormTypeModel.class , cascade = CascadeType.ALL , orphanRemoval = true ,fetch = FetchType.LAZY, mappedBy="user")
+    @OneToMany(targetEntity = UserFormTypeModel.class , cascade = CascadeType.PERSIST , orphanRemoval = true, fetch = FetchType.EAGER, mappedBy="user")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<UserFormTypeModel> listtype = new ArrayList();
 
@@ -165,6 +166,9 @@ public class UserModel {
     }
 
     public Collection<GrantedAuthority> getGrantedAuthoritiesList() {
+        if(grantedAuthoritiesList.size() == 0){
+            grantedAuthoritiesList.add(new SimpleGrantedAuthority(getRole()));
+        }
         return grantedAuthoritiesList;
     }
 

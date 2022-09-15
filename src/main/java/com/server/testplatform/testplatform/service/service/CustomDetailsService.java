@@ -47,34 +47,7 @@ public class CustomDetailsService  implements UserDetailsService {
         if(userEntity != null) return new CustomUser(userEntity);
         return null;
     }
-    //тестовая учетка для админа
-    private void addTestAdmin()
-    {
-        UserModel userModel = new UserModel();
-        userModel.setCreatedata(LocalDateTime.now());
 
-        userModel.setUsername("gawric");
-        userModel.setRole("ROLE_ADMIN");
-        userModel.setAccountNonExpired(true);
-        userModel.setCredentialsNonExpired(true);
-        userModel.setAccountNonLocked(true);
-        userModel.setEnabled(true);
-        userModel.setPassword(passwordEncoder.encode("11111111"));
-        serviceUserDb.saveUser(userModel);
-
-    }
-
-    //тестовая учетка для юзера
-    private void addTestUser()
-    {
-        UserModel userModel = new UserModel();
-        userModel.setCreatedata(LocalDateTime.now());
-        userModel.setUsername("testuser");
-        userModel.setRole("ROLE_USER");
-        userModel.setPassword(passwordEncoder.encode("11111111"));
-        serviceUserDb.saveUser(userModel);
-
-    }
 
 
 }

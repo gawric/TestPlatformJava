@@ -10,6 +10,7 @@ import com.server.testplatform.testplatform.model.form.answer.AnswerQuestModel;
 import com.server.testplatform.testplatform.model.settingform.ClientSettingForm;
 import com.server.testplatform.testplatform.model.settingform.SettingForm;
 import com.server.testplatform.testplatform.model.upload.UploadImageModel;
+import com.server.testplatform.testplatform.service.db.impl.ServiceTypeModelDbImpl;
 import com.server.testplatform.testplatform.service.db.inter.IServiceUserDb;
 
 import com.server.testplatform.testplatform.service.service.impl.support.AdminUserForm;
@@ -51,6 +52,9 @@ public class AdminServiceUsers implements IAdminServiceUser {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ServiceTypeModelDbImpl stm;
 
 
     public ResponseEntity<Object> addSettingForm(long user_id , long form_model , SettingForm sf){
@@ -100,12 +104,9 @@ public class AdminServiceUsers implements IAdminServiceUser {
 
 
         List<UserFormTypeModel> listType = user.getListtype();
+
         if(!isExist(listType , uftm.getTypename())){
-
-            List<UserFormTypeModel> filterlistType  = removeItem( listType,  uftm);
-            user.setListtype(filterlistType);
-            serviceUserDb.saveUser(user);
-
+            removeObject(uftm);
             return new ResponseEntity<>(uftm , HttpStatus.OK);
         }
 
@@ -114,9 +115,8 @@ public class AdminServiceUsers implements IAdminServiceUser {
     }
 
 
-    private List<UserFormTypeModel> removeItem(List<UserFormTypeModel> listType, UserFormTypeModel obj){
-        listType.remove(obj);
-        return listType;
+    private void  removeObject(UserFormTypeModel obj){
+        stm.deleteTypeModel(obj);
     }
 
     public ResponseEntity<Object> addDataType(long user_id , String typeName){
@@ -129,9 +129,9 @@ public class AdminServiceUsers implements IAdminServiceUser {
         if(user.getListtype() == null)listType = new ArrayList<>();
 
         if(isExist( listType , typeName)){
-            listType.add(t1);
-            serviceUserDb.saveUser(user);
-            UserFormTypeModel t1w = getTypeName( user.getListtype() ,  typeName);
+          //  listType.add(t1);
+            stm.saveType(t1);
+            UserFormTypeModel t1w = getTypeName(typeName);
             return new ResponseEntity<>(t1w , HttpStatus.OK);
         }
 
@@ -150,11 +150,8 @@ public class AdminServiceUsers implements IAdminServiceUser {
         return false;
     }
 
-    private UserFormTypeModel getTypeName(List<UserFormTypeModel> listType , String typeName){
-        return listType
-                .stream()
-                .filter(x->x.getTypename().equals(typeName))
-                .findFirst().get();
+    private UserFormTypeModel getTypeName(String typeName){
+        return stm.findByTypename(typeName);
     }
 
     public ResponseEntity<Object> addTestType(long user_id){
@@ -340,7 +337,7 @@ public class AdminServiceUsers implements IAdminServiceUser {
         {
             List<UserFormTypeModel> listType  = user.getListtype();
 
-                return new ResponseEntity<>(listType, HttpStatus.OK);
+            return new ResponseEntity<>(listType, HttpStatus.OK);
 
         }
 

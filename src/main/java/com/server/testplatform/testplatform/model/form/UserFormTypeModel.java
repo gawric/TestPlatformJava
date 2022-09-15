@@ -25,7 +25,7 @@ public class UserFormTypeModel {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id"  , insertable = true )
+    @JoinColumn(name = "user_id" , insertable = true )
     private UserModel user;
 
     public UserModel getUser() {

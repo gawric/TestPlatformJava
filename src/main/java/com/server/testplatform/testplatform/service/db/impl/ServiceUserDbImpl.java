@@ -72,8 +72,8 @@ public class ServiceUserDbImpl implements IServiceUserDb {
     }
 
     @Override
-    public UploadImageModel findUploadById(long id , long user_id) {
-        return userModelRepository.findUploadById(id , user_id);
+    public UploadImageModel findUploadById(long id) {
+        return userModelRepository.findUploadById(id);
     }
 
     @Override

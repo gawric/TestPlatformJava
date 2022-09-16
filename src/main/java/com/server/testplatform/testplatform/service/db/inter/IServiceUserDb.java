@@ -10,7 +10,7 @@ public interface IServiceUserDb {
     boolean findExistByname(String name);
     boolean deleteUser(long id);
     boolean findExistById(long id);
-    UploadImageModel findUploadById(long id , long user_id);
+    UploadImageModel findUploadById(long id);
     boolean findUploadByPath(String path);
     UploadImageModel getUploadByPath(String path);
 }

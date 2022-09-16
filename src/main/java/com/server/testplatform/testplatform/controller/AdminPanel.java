@@ -87,8 +87,8 @@ public class AdminPanel {
     @PreAuthorize("hasRole('USER')")
     @GetMapping(value = "/get-form/{form_id}")
     @ResponseBody
-    public ResponseEntity<Object> getForm(@PathVariable("form_id") Long form_id) {
-        return su.findByForm(1 , form_id);
+    public ResponseEntity<Object> getForm(@PathVariable("form_id") Long form_id, Principal principal) {
+        return su.findByForm(getUserId(principal.getName()) , form_id);
     }
 
 
@@ -98,25 +98,25 @@ public class AdminPanel {
         return su.addUserWeb(newUser);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping(path  = "/addformmodel" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object>  createForm(@Valid @RequestBody UserFormModel ufm) {
-        return su.addForm(1 , ufm);
+    public ResponseEntity<Object>  createForm(@Valid @RequestBody UserFormModel ufm, Principal principal) {
+        return su.addForm(getUserId(principal.getName()) , ufm);
     }
 
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping(path  = "/addsettingform" , produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object>  createSettingForm(@Valid @RequestBody ClientSettingForm cfm) {
-        return su.addSettingForm(1 , cfm.getForm_id() , cfm.getSf());
+    public ResponseEntity<Object>  createSettingForm(@Valid @RequestBody ClientSettingForm cfm, Principal principal) {
+        return su.addSettingForm(getUserId(principal.getName()) , cfm.getForm_id() , cfm.getSf());
     }
 
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/get-setting-form/{form_id}")
     @ResponseBody
-    public ResponseEntity<Object> getSettingForm(@PathVariable("form_id") Long form_id) {
-        return su.findBySettingForm(1 , form_id);
+    public ResponseEntity<Object> getSettingForm(@PathVariable("form_id") Long form_id, Principal principal) {
+        return su.findBySettingForm(getUserId(principal.getName()) , form_id);
     }
 
 

@@ -19,7 +19,10 @@ public interface  UserRepository extends CrudRepository<UserModel, Long> {
     boolean findExistById(long id);
 
     @Query("select uim from UploadImageModel uim where upload_id = ?1 and user_id = ?2")
-    UploadImageModel findUploadById(long upload_id , long user_id);
+    UploadImageModel findUploadByIdAndUserId(long upload_id , long user_id);
+
+    @Query("select uim from UploadImageModel uim where upload_id = ?1")
+    UploadImageModel findUploadById(long upload_id);
 
     @Query("select count(uim) = 1 from UploadImageModel uim where path = ?1")
     boolean findUploadByPath(String path);

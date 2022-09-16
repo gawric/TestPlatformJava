@@ -26,18 +26,21 @@ public class ServiceUsersImage implements IServiceUsersImage {
 
 
     @Override
-    public InputStream getImage(long id , long user_id , HttpServletResponse response) {
+    public InputStream getImage(long id , HttpServletResponse response) {
 
-        UploadImageModel uim = serviceUserDb.findUploadById(id , user_id);
+        UploadImageModel uim = serviceUserDb.findUploadById(id);
         String ct = detectedImage(uim.getName());
         response.setContentType(ct);
         InputStream in = null;
-        try {
-            in = new FileInputStream(uim.getPath());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if(new File(uim.getPath()).exists()){
+            try {
+                in = new FileInputStream(uim.getPath());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            return  in;
         }
-        return  in;
+        return null;
     }
 
     private String detectedImage(String filename)
@@ -61,7 +64,7 @@ public class ServiceUsersImage implements IServiceUsersImage {
     public ResponseEntity<Object> findUploadById(long id , long user_id) {
             try
             {
-                UploadImageModel uim = serviceUserDb.findUploadById(id , user_id);
+                UploadImageModel uim = serviceUserDb.findUploadById(id);
                 return  new ResponseEntity<>(uim, HttpStatus.OK);
 
             }

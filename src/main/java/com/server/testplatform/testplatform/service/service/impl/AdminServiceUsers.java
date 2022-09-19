@@ -3,6 +3,8 @@ package com.server.testplatform.testplatform.service.service.impl;
 import com.server.testplatform.testplatform.exception.NoAccessEditingUserException;
 import com.server.testplatform.testplatform.exception.NotFoundUserException;
 import com.server.testplatform.testplatform.model.UserModel;
+import com.server.testplatform.testplatform.model.authoption.AuthOptionModel;
+import com.server.testplatform.testplatform.model.form.PostDelModel;
 import com.server.testplatform.testplatform.model.form.UserFormModel;
 import com.server.testplatform.testplatform.model.form.UserFormTypeModel;
 import com.server.testplatform.testplatform.model.form.UserQuestModel;
@@ -11,6 +13,7 @@ import com.server.testplatform.testplatform.model.settingform.ClientSettingForm;
 import com.server.testplatform.testplatform.model.settingform.SettingForm;
 import com.server.testplatform.testplatform.model.upload.UploadImageModel;
 import com.server.testplatform.testplatform.service.db.impl.ServiceTypeModelDbImpl;
+import com.server.testplatform.testplatform.service.db.inter.IServiceDelForm;
 import com.server.testplatform.testplatform.service.db.inter.IServiceUserDb;
 
 import com.server.testplatform.testplatform.service.service.impl.support.AdminUserForm;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +59,9 @@ public class AdminServiceUsers implements IAdminServiceUser {
 
     @Autowired
     private ServiceTypeModelDbImpl stm;
+
+    @Autowired
+    private IServiceDelForm sdf;
 
 
     public ResponseEntity<Object> addSettingForm(long user_id , long form_model , SettingForm sf){
@@ -428,15 +435,8 @@ public class AdminServiceUsers implements IAdminServiceUser {
         UserModel userModel = serviceUserDb.findById(user_id);
         try
         {
-
             if(userModel == null)return new ResponseEntity<>("{}", HttpStatus.OK);
-
-            Optional<UserFormModel> ufm2 = userModel
-                    .getListForm()
-                    .stream()
-                    .filter(c -> c.getForm_id() == form_id)
-                    .findFirst();
-
+            Optional<UserFormModel>  ufm2 = findFormById( userModel ,  form_id);
             return new ResponseEntity<>(ufm2.get(), HttpStatus.OK);
 
         }catch (Exception ex)
@@ -444,6 +444,14 @@ public class AdminServiceUsers implements IAdminServiceUser {
             ex.printStackTrace();
             return ErrorMessage.getResponceErrorHttpStatus("Not found user exception", HttpStatus.NOT_FOUND);
         }
+    }
+
+    private Optional<UserFormModel> findFormById(UserModel userModel , long form_id){
+      return userModel
+                .getListForm()
+                .stream()
+                .filter(c -> c.getForm_id() == form_id)
+                .findFirst();
     }
 
     @Override
@@ -499,6 +507,18 @@ public class AdminServiceUsers implements IAdminServiceUser {
         //BlockingQueue<Integer> blck = new ArrayBlockingQueue(1024);
 
         return ErrorMessage.getResponceError("Unknown error");
+    }
+
+    @Override
+    public ResponseEntity<Object> delForms(long user_id, long form_id) {
+        UserModel user = serviceUserDb.findById(user_id);
+        Optional<UserFormModel> ufm2 = findFormById(user , form_id);
+        if(ufm2.isPresent()){
+            sdf.deleteFormModel(ufm2.get());
+            return new ResponseEntity<>(new PostDelModel(ufm2.get().getForm_id() , "OK"), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(new PostDelModel(ufm2.get().getForm_id() , "Not Found") , HttpStatus.OK);
     }
 
 

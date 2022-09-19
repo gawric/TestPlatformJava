@@ -27,7 +27,7 @@ public class UserPanel {
 
     @GetMapping(value = "/get-type")
     public ResponseEntity<Object> test() {
-      return su.getAllType(1);
+      return su.getAllType();
     }
 
     @GetMapping(value = "/get-allform-type/{type_id}")

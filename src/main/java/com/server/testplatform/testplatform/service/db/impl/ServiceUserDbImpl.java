@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Transactional
 @Service("IServiceUserDb")
@@ -84,6 +85,11 @@ public class ServiceUserDbImpl implements IServiceUserDb {
     @Override
     public UploadImageModel getUploadByPath(String path) {
         return userModelRepository.getUploadByPath(path);
+    }
+
+    @Override
+    public Iterable<UserModel> getAllUser() {
+        return userModelRepository.findAll();
     }
 
 

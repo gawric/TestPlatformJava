@@ -7,6 +7,8 @@ import com.server.testplatform.testplatform.model.authoption.AuthResultModel;
 import com.server.testplatform.testplatform.model.form.*;
 import com.server.testplatform.testplatform.model.answerreport.AnswerRequestModel;
 import com.server.testplatform.testplatform.model.settingform.SettingForm;
+import com.server.testplatform.testplatform.service.db.impl.ServiceUserFormDbImpl;
+import com.server.testplatform.testplatform.service.db.inter.IServiceDelForm;
 import com.server.testplatform.testplatform.service.db.inter.IServiceUserDb;
 import com.server.testplatform.testplatform.service.service.impl.support.AdminUserForm;
 import com.server.testplatform.testplatform.service.service.impl.support.UsersType;
@@ -17,7 +19,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service("IServiceUsers")
 public class ServiceUsers implements IServiceUsers {
@@ -34,14 +39,27 @@ public class ServiceUsers implements IServiceUsers {
 
 
 
+
+
     @Override
-    public ResponseEntity<Object> getAllType(long user_id) {
-        UserModel user = serviceUserDb.findById(user_id);
-        List<UserFormTypeModel> list = ut.getDataType( user);
-        if(list == null){
+    public ResponseEntity<Object> getAllType() {
+       Iterable<UserModel> user = serviceUserDb.getAllUser();
+       ArrayList<UserFormTypeModel> allType = new ArrayList();
+       setIterableModel( user , allType);
+
+        if(allType == null){
             return new ResponseEntity<>("{}" , HttpStatus.NO_CONTENT);
         }
-         return new ResponseEntity<>(list , HttpStatus.OK);
+         return new ResponseEntity<>(allType , HttpStatus.OK);
+    }
+
+    private void setIterableModel(Iterable<UserModel> user , ArrayList<UserFormTypeModel> allType){
+
+        StreamSupport.stream(user.spliterator(), false)
+                .map(x->ut.getDataType(x))
+                .peek(f->allType.addAll(f))
+                .collect(Collectors.toList());
+
     }
 
     @Override
@@ -121,6 +139,8 @@ public class ServiceUsers implements IServiceUsers {
         AuthOptionModel aom = auf.getAuthOptionToFormid(ufm);
         return new ResponseEntity<>(aom , HttpStatus.OK);
     }
+
+
 
     @Override
     public ResponseEntity<Object> getAuthOptionsValidate(long user_id, long form_id, String username, String phone, String email) {

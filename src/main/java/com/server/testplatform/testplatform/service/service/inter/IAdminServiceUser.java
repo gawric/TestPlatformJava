@@ -17,6 +17,7 @@ public interface IAdminServiceUser {
     //true blocked
     //false unblocked
     ResponseEntity<Object> blockUserWeb(long userId , boolean isBlock);
+    ResponseEntity<Object> delForms(long user_id, long form_id);
 
 
 }

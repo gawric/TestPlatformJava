@@ -1,6 +1,7 @@
 package com.server.testplatform.testplatform.controller;
 
 import com.server.testplatform.testplatform.model.CustomUser;
+import com.server.testplatform.testplatform.model.form.PostDelModel;
 import com.server.testplatform.testplatform.model.settingform.ClientSettingForm;
 import com.server.testplatform.testplatform.model.UserModel;
 import com.server.testplatform.testplatform.model.form.UserFormModel;
@@ -52,9 +53,9 @@ public class AdminPanel {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/initdata")
-    public ResponseEntity<Object> initUsers() {
+    public ResponseEntity<Object> initUsers(Principal principal) {
         System.out.println("Init Data Request!");
-        return su.initDataForm(1);
+        return su.initDataForm(getUserId(principal.getName()));
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -117,6 +118,14 @@ public class AdminPanel {
     @ResponseBody
     public ResponseEntity<Object> getSettingForm(@PathVariable("form_id") Long form_id, Principal principal) {
         return su.findBySettingForm(getUserId(principal.getName()) , form_id);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping(path  = "/delform" , produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Object> delForm(@Valid @RequestBody PostDelModel model , Principal principal) {
+        long user_id = getUserId(principal.getName());
+        return su.delForms(user_id , model.getForm_id());
     }
 
 

@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 public class UsersType {
 
     public List<UserFormTypeModel> getDataType(UserModel user){
-        List<UserFormTypeModel> listType = user.getListtype();
-        return listType;
+        return user.getListtype();
     }
 
     public List<UserFormModel> getListForm(UserModel user , long type_id){

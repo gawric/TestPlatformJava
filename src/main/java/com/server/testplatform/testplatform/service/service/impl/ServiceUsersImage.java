@@ -78,7 +78,7 @@ public class ServiceUsersImage implements IServiceUsersImage {
     public ResponseEntity<Object> getListUploadImg(long user_id) {
         try
         {
-            List<UploadImageModel> luim = serviceUserDb.findById(1).getListUpload();
+            List<UploadImageModel> luim = serviceUserDb.findById(user_id).getListUpload();
             return  new ResponseEntity<>(luim, HttpStatus.OK);
 
         }

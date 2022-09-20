@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service("IServiceReportAnswerUsers")
 public class ServiceReportAnswerUsers implements IServiceReportAnswerUsers {
@@ -100,8 +101,9 @@ public class ServiceReportAnswerUsers implements IServiceReportAnswerUsers {
             if(um != null){
 
                 List<ReportUserAnswer> listItemsReport = serviceReportDb.findAllReport();
+                List<ReportUserAnswer> listItemsReportClear = clearSize0( listItemsReport);
                 List<UserFormModel> listUfm = um.getListForm();
-                List<AnswerTableDetail> listAnswerTable = ra.getPagesAnswerReport(page , listUfm , listItemsReport);
+                List<AnswerTableDetail> listAnswerTable = ra.getPagesAnswerReport(page , listUfm , listItemsReportClear);
                 return new ResponseEntity<>(listAnswerTable , HttpStatus.OK);
             }
 
@@ -112,6 +114,14 @@ public class ServiceReportAnswerUsers implements IServiceReportAnswerUsers {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private List<ReportUserAnswer> clearSize0(List<ReportUserAnswer> listItemsReport){
+        return listItemsReport
+                .stream()
+                .filter(x->x.getListItemsReport() != null)
+                .filter(f->f.getListItemsReport().size() > 0)
+                .collect(Collectors.toList());
     }
 
 

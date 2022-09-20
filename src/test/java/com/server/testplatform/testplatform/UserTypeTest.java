@@ -48,11 +48,14 @@ public class UserTypeTest {
     @Test
     @DisplayName("Проверка фильтрации FormList по его типу")
     void getAllFormToType() {
+        List<UserModel> bList = new ArrayList<UserModel>();
         UserModel mockUser = mock(UserModel.class);
         when(mockUser.getListtype()).thenReturn(getListModel());
         when(mockUser.getListForm()).thenReturn(getListFormModel());
+        bList.add(mockUser);
+        Iterable<UserModel>iterator = bList;
 
-        List<UserFormModel> formToType = ut.getListForm(mockUser , 23l);
+        List<UserFormModel> formToType = ut.getListForm(iterator , 23l);
 
 
 

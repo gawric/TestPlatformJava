@@ -21,6 +21,11 @@ public class ServiceTypeModelDbImpl implements IServiceTypeModelDbImpl {
         tmr.deleteByType_id(uftm.getType_id());
     }
 
+    @Override
+    public UserFormTypeModel findByType_id(long type_id) {
+        return tmr.findById(type_id);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public UserFormTypeModel findByTypename(String typename) {

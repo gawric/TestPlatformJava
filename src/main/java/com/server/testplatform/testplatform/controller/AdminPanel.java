@@ -132,11 +132,11 @@ public class AdminPanel {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/getdata")
-    public ResponseEntity<Object> getDataUsers() {
+    public ResponseEntity<Object> getDataUsers(Principal principal) {
         System.out.println("getDataUsers!");
        // su.findByIdTWeb(1);
 
-        return su.initDataForm(1);
+        return su.initDataForm(getUserId(principal.getName()));
     }
 
     private long getUserId(String username){

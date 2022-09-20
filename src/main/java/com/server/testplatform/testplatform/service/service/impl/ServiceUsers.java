@@ -9,6 +9,7 @@ import com.server.testplatform.testplatform.model.answerreport.AnswerRequestMode
 import com.server.testplatform.testplatform.model.settingform.SettingForm;
 import com.server.testplatform.testplatform.service.db.impl.ServiceUserFormDbImpl;
 import com.server.testplatform.testplatform.service.db.inter.IServiceDelForm;
+import com.server.testplatform.testplatform.service.db.inter.IServiceTypeModelDbImpl;
 import com.server.testplatform.testplatform.service.db.inter.IServiceUserDb;
 import com.server.testplatform.testplatform.service.service.impl.support.AdminUserForm;
 import com.server.testplatform.testplatform.service.service.impl.support.UsersType;
@@ -37,6 +38,9 @@ public class ServiceUsers implements IServiceUsers {
     @Autowired
     private AdminUserForm auf;
 
+    @Autowired
+    private IServiceTypeModelDbImpl tm;
+
 
 
 
@@ -63,8 +67,8 @@ public class ServiceUsers implements IServiceUsers {
     }
 
     @Override
-    public ResponseEntity<Object> getListForm(long user_id, long type_id) {
-        UserModel user = serviceUserDb.findById(1);
+    public ResponseEntity<Object> getListForm(long type_id) {
+        Iterable<UserModel> user = serviceUserDb.getAllUser();
         List<UserFormModel> list = ut.getListForm( user , type_id);
         UserFormTestWindow tWindows = new UserFormTestWindow();
 
@@ -75,7 +79,9 @@ public class ServiceUsers implements IServiceUsers {
         if(list.size() > 0){
             long type_id2 = list.get(0).getSelectformtype();
             tWindows.setListForm(list);
-            tWindows.setTypeModel(TypeForm.getEqualsType(ut.getDataType(user) , type_id2));
+            UserFormTypeModel tp = tm.findByType_id(type_id2);
+            tWindows.setTypeModel(tp);
+          //  tWindows.setTypeModel(TypeForm.getEqualsType(ut.getDataType(user) , type_id2));
 
             return new ResponseEntity<>(tWindows , HttpStatus.OK);
         }
@@ -162,11 +168,7 @@ public class ServiceUsers implements IServiceUsers {
 
 
 
-    private UserFormModel getUfm(AnswerRequestModel arm ,  UserModel user){
 
-        List<UserFormModel> listFormModel = user.getListForm();
-        return auf.findByIdForm(listFormModel , arm.getForm_id());
-    }
 
     private AuthResultModel createModel(boolean status , String otherTextError){
         AuthResultModel arm = new AuthResultModel();

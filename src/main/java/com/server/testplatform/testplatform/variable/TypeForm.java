@@ -13,7 +13,5 @@ public class TypeForm {
             return listType.stream()
                     .filter(x->x.getType_id() == type_id)
                     .findFirst().get();
-
-
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TypeModelRepository extends CrudRepository<UserFormTypeModel, Long> {
     UserFormTypeModel findByTypename(String typename);
+    UserFormTypeModel findById(long type_id);
 
     @Modifying
     @Query(value = "DELETE FROM userformtype WHERE type_id = :typeid" , nativeQuery = true)

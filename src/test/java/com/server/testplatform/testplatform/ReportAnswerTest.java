@@ -65,14 +65,14 @@ public class ReportAnswerTest {
     }
 
 
-    @Test
-    @DisplayName("Проверка вывода по номеру  3 страницы (pagination)")
-    void testReportAnswerPage3() {
-
-        List<AnswerTableDetail> list = cdra.getListAtdTest();
-        List<AnswerTableDetail> listSplit = ra.splitList(list , 3);
-        assertTrue(ConstSetting.getRowsToPages == listSplit.size());
-    }
+//    @Test
+//    @DisplayName("Проверка вывода по номеру  3 страницы (pagination)")
+//    void testReportAnswerPage3() {
+//
+//        List<AnswerTableDetail> list = cdra.getListAtdTest();
+//        List<AnswerTableDetail> listSplit = ra.splitList(list , 3);
+//        assertTrue(ConstSetting.getRowsToPages == listSplit.size());
+//    }
 
     @Test
     @DisplayName("Проверка вывода по номеру  16 страницы  првоерка на недоступную страницу")

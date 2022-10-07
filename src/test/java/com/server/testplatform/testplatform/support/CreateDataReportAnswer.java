@@ -159,6 +159,49 @@ public class CreateDataReportAnswer {
         AnswerTableDetail s8 = new AnswerTableDetail();
         s8.setNameForm("test8");
 
+        AnswerTableDetail s9 = new AnswerTableDetail();
+        s9.setNameForm("test9");
+
+        AnswerTableDetail s10 = new AnswerTableDetail();
+        s10.setNameForm("test10");
+
+        AnswerTableDetail s11 = new AnswerTableDetail();
+        s11.setNameForm("test11");
+
+        AnswerTableDetail s12 = new AnswerTableDetail();
+        s12.setNameForm("test12");
+
+        AnswerTableDetail s13 = new AnswerTableDetail();
+        s13.setNameForm("test13");
+
+        AnswerTableDetail s14 = new AnswerTableDetail();
+        s14.setNameForm("test14");
+
+        AnswerTableDetail s15= new AnswerTableDetail();
+        s15.setNameForm("test15");
+
+        AnswerTableDetail s16 = new AnswerTableDetail();
+        s16.setNameForm("test16");
+
+        AnswerTableDetail s17 = new AnswerTableDetail();
+        s17.setNameForm("test17");
+
+        AnswerTableDetail s18 = new AnswerTableDetail();
+        s18.setNameForm("test18");
+
+        AnswerTableDetail s19 = new AnswerTableDetail();
+        s19.setNameForm("test19");
+
+        AnswerTableDetail s20 = new AnswerTableDetail();
+        s20.setNameForm("test20");
+
+        AnswerTableDetail s21 = new AnswerTableDetail();
+        s21.setNameForm("test21");
+
+        AnswerTableDetail s22 = new AnswerTableDetail();
+        s22.setNameForm("test22");
+
+
         List<AnswerTableDetail> list = new ArrayList<>();
         list.add(s1);
         list.add(s2);
@@ -172,6 +215,32 @@ public class CreateDataReportAnswer {
         list.add(s7);
         list.add(s8);
 
+        list.add(s9);
+        list.add(s10);
+
+        list.add(s11);
+        list.add(s12);
+
+        list.add(s13);
+        list.add(s14);
+
+        list.add(s15);
+        list.add(s15);
+
+        list.add(s16);
+        list.add(s16);
+
+        list.add(s17);
+        list.add(s17);
+
+        list.add(s18);
+        list.add(s18);
+
+        list.add(s19);
+        list.add(s19);
+
+        list.add(s20);
+        list.add(s21);
 
         return list;
     }

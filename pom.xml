@@ -8,13 +8,15 @@
 		<version>2.5.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+	<packaging>jar</packaging>
 	<groupId>com.server.testplatform</groupId>
 	<artifactId>testplatform</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>testplatform</name>
 	<description>Универсальная платформа для тестирования знаний</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>13</java.version>
+		<start-class>com.server.testplatform.testplatform.TestplatformApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -164,6 +166,10 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.5.4</version>
+				<configuration>
+					<mainClass>com.server.testplatform.testplatform.TestplatformApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

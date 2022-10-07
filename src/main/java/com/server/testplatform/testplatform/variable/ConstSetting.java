@@ -4,8 +4,10 @@ import com.server.testplatform.testplatform.model.settingform.ArrLevelModel;
 import com.server.testplatform.testplatform.model.settingform.ArrTypeAccess;
 
 public class ConstSetting {
+
+    public static final String imgFolderDocker = "/media/hdd_tomcat/imgstatic/";
     //кол-во строчек в 1 странице
-    public static int getRowsToPages = 2;
+    public static int getRowsToPages = 10;
     public static ArrLevelModel[] getLevelArr(){
 
         ArrLevelModel arrLevelModel1 = new ArrLevelModel();

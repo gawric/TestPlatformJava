@@ -4,6 +4,7 @@ import com.server.testplatform.testplatform.model.UserModel;
 import com.server.testplatform.testplatform.model.upload.UploadImageModel;
 import com.server.testplatform.testplatform.service.db.inter.IServiceUserDb;
 import com.server.testplatform.testplatform.service.service.inter.IServiceUsersImage;
+import com.server.testplatform.testplatform.variable.ConstSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,12 +95,11 @@ public class ServiceUsersImage implements IServiceUsersImage {
         if (!file.isEmpty()) {
             try
             {
-                File result = writeToFs(name, file);
+                String absolutePath = writeToFs(name, file , ConstSetting.imgFolderDocker);
                 UserModel user =  serviceUserDb.findById(user_id);
-                String path = result.getAbsolutePath();
-                UploadImageModel uim = saveBase(user,  path,  name,  file.getSize());
-                UploadImageModel uimupdate = searchUploadToPath( user.getListUpload() ,  path);
-                System.out.println("Вы удачно загрузили " + name + " в " + name + "-uploaded ! путь у файлу " + result.getAbsolutePath());
+                UploadImageModel uim = saveBase(user,  absolutePath,  name,  file.getSize());
+                UploadImageModel uimupdate = searchUploadToPath( user.getListUpload() ,  absolutePath);
+                System.out.println("Вы удачно загрузили " + name + " в " + name + "-uploaded ! путь у файлу " + absolutePath);
                 return  new ResponseEntity<>(uimupdate, HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>("{\"status\" : \"error\"}", HttpStatus.NO_CONTENT);
@@ -143,12 +143,15 @@ public class ServiceUsersImage implements IServiceUsersImage {
 
         return uim;
     }
-    private File writeToFs(String name, MultipartFile file) throws IOException {
+    private String writeToFs(String name, MultipartFile file , String fsPath) throws IOException {
         byte[] bytes = file.getBytes();
-        File fileOut = new File(name);
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(fileOut));
+       // File fileOut = new File(name);
+        System.out.println(fsPath + name);
+        String absolutepath = fsPath + name;
+        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(absolutepath));
         stream.write(bytes);
         stream.close();
-        return fileOut;
+
+        return absolutepath;
     }
 }
